@@ -121,6 +121,10 @@ PRODUCT_PACKAGES += libnl_2 iw
 PRODUCT_PACKAGES += tcpdump ping6
 PRODUCT_PACKAGES += io devmem2
 
+#ics-magicmod launcher and phone_num_location
+PRODUCT_PACKAGES += MagicLauncher
+PRODUCT_PACKAGES += libphoneloc-sqljni
+
 # copy all vendor (motorola) kernel modules to system/lib/modules
 PRODUCT_COPY_FILES += $(shell test -d vendor/motorola/jordan/lib/modules &&  \
 	find vendor/motorola/jordan/lib/modules -name '*.ko' \
