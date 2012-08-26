@@ -97,5 +97,9 @@ persist.sys.camera-mute=0
 persist.service.adb.enable=1
 # default root acces
 persist.sys.root_access=3
+#boot animation & sound
+persist.sys.boot_enabled=1
+persist.sys.boot_sound=0
+persist.sys.boot_volume=0.2
 #=========================================================================================
 
