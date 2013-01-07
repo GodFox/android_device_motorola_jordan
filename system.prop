@@ -92,7 +92,7 @@ persist.sys.button_brightness=100
 # use default multitouch configuration
 persist.sys.multitouch=2
 # Shutter sound enabled
-persist.sys.camera-mute=0
+persist.sys.camera-sound=1
 # enable adbd during first boot (for dalvik cache problems)
 persist.service.adb.enable=1
 # default root acces
