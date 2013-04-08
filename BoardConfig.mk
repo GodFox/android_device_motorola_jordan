@@ -35,6 +35,9 @@ TARGET_NO_PREINSTALL := true
 TARGET_BOOTLOADER_BOARD_NAME := jordan
 BOARD_HAS_LOCKED_BOOTLOADER  := true
 
+TARGET_PROVIDES_UEVENTD_RC :=true
+TARGET_PROVIDES_INIT_RC :=true
+
 # Board properties
 TARGET_BOARD_PLATFORM := omap3
 TARGET_CPU_ABI := armeabi-v7a
@@ -164,20 +167,66 @@ BOARD_USE_KINETO_COMPATIBILITY := true
 TARGET_BOOTANIMATION_PRELOAD := true
 TARGET_BOOTANIMATION_TEXTURE_CACHE := true
 
-# Recent gingerbread kernel specific, to double check (Defy+)
-ifeq ($(BOARD_DEFY_MODEL),DEFY_PLUS)
-BOARD_USE_CID_ROTATE_34 := true
-endif
+#####Comment old Kernel configs >>>>>>>
+
+## Recent gingerbread kernel specific, to double check (Defy+)
+#ifeq ($(BOARD_DEFY_MODEL),DEFY_PLUS)
+#BOARD_USE_CID_ROTATE_34 := true
+#endif
+
+## If kernel sources are present in repo, here is the location
+##TARGET_KERNEL_SOURCE := $(ANDROID_BUILD_TOP)/kernel/moto/mb525
+##TARGET_KERNEL_CONFIG := mapphone_mb525_defconfig
+
+## Beware: set only prebuilt OR source+config
+#TARGET_PREBUILT_KERNEL := $(ANDROID_BUILD_TOP)/device/motorola/jordan/kernel
+
+## Extra : to build external modules sources
+#MOTO_KERNEL_SOURCE := $(ANDROID_BUILD_TOP)/kernel/moto/mb525
+#MOTO_KERNEL_CONFIG := mapphone_mb525_defconfig
+#TARGET_KERNEL_MODULES_EXT := $(ANDROID_BUILD_TOP)/device/motorola/jordan/modules
+
+##### <<<<<<< Comment old Kernel configs
+
+
+##### 2ndboot Kernel stuff #####
+MODULES_2NDBOOT_NAME := true
+TARGET_MODULES_WIFI_SOURCE := "system/wlan/ti/wilink_6_1/platforms/os/linux/"
+TARGET_MODULES_AP_SOURCE := "system/wlan/ti/WiLink_AP/platforms/os/linux/"
+
+API_MAKE := \
+	make PREFIX=$(ANDROID_BUILD_TOP)/$(TARGET_OUT_INTERMEDIATES)/kernel_intermediates/build \
+	ARCH=arm \
+	CROSS_COMPILE=$(ANDROID_BUILD_TOP)/prebuilt/$(HOST_PREBUILT_TAG)/toolchain/arm-eabi-4.4.3/bin/arm-eabi- \
+	HOST_PLATFORM=zoom2 \
+	KERNEL_DIR=$(ANDROID_BUILD_TOP)/$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ \
+
+ext_modules:
+	$(API_MAKE) -C $(TARGET_KERNEL_MODULES_EXT) modules
+	find $(TARGET_KERNEL_MODULES_EXT)/ -name "*.ko" -exec mv {} \
+		$(KERNEL_MODULES_2NDBOOT_OUT)/ \; || true
+	$(API_MAKE) clean -C $(TARGET_MODULES_WIFI_SOURCE)
+	$(API_MAKE) clean -C $(TARGET_MODULES_AP_SOURCE)
+	$(API_MAKE) -C $(TARGET_MODULES_WIFI_SOURCE) HOST_PLATFORM=zoom2 KERNEL_DIR=$(KERNEL_OUT)
+	$(API_MAKE) -C $(TARGET_MODULES_AP_SOURCE) HOST_PLATFORM=zoom2 KERNEL_DIR=$(KERNEL_OUT)
+	mv $(TARGET_MODULES_WIFI_SOURCE)/tiwlan_drv.ko $(KERNEL_MODULES_2NDBOOT_OUT)/tiwlan_drv.ko
+	mv $(TARGET_MODULES_AP_SOURCE)/tiap_drv.ko $(KERNEL_MODULES_2NDBOOT_OUT)/tiap_drv.ko
+	$(ANDROID_BUILD_TOP)/device/motorola/jordan/modules-2ndboot.sh
+	arm-linux-androideabi-strip --strip-unneeded $(KERNEL_MODULES_OUT)/*.ko
+
+hboot:
+	mkdir -p $(PRODUCT_OUT)/system/bootmenu/2nd-boot   
+	echo "$(BOARD_KERNEL_CMDLINE)" > $(PRODUCT_OUT)/system/bootmenu/2nd-boot/cmdline  
+	$(API_MAKE) -C $(ANDROID_BUILD_TOP)/device/motorola/jordan/hboot
+	mv $(ANDROID_BUILD_TOP)/device/motorola/jordan/hboot/hboot.bin $(PRODUCT_OUT)/system/bootmenu/2nd-boot/
+	make clean -C $(ANDROID_BUILD_TOP)/device/motorola/jordan/hboot
 
 # If kernel sources are present in repo, here is the location
-#TARGET_KERNEL_SOURCE := $(ANDROID_BUILD_TOP)/kernel/moto/mb525
-#TARGET_KERNEL_CONFIG := mapphone_mb525_defconfig
-
-# Beware: set only prebuilt OR source+config
-TARGET_PREBUILT_KERNEL := $(ANDROID_BUILD_TOP)/device/motorola/jordan/kernel
-
-# Extra : to build external modules sources
-MOTO_KERNEL_SOURCE := $(ANDROID_BUILD_TOP)/kernel/moto/mb525
-MOTO_KERNEL_CONFIG := mapphone_mb525_defconfig
-TARGET_KERNEL_MODULES_EXT := $(ANDROID_BUILD_TOP)/device/motorola/jordan/modules
-
+TARGET_KERNEL_SOURCE := $(ANDROID_BUILD_TOP)/kernel/moto/jordan
+TARGET_KERNEL_CUSTOM_TOOLCHAIN := arm-eabi-4.4.3
+TARGET_KERNEL_CONFIG  := mapphone_defconfig
+BOARD_KERNEL_CMDLINE := console=/dev/null mem=498M init=/init ip=off brdrev=P3A vram=6M omapfb.vram=0:6M
+#TARGET_PREBUILT_KERNEL := $(ANDROID_BUILD_TOP)/device/motorola/jordan/kernel
+# Extra : external modules sources
+TARGET_KERNEL_MODULES_EXT := $(ANDROID_BUILD_TOP)/device/motorola/jordan/modules/sources
+TARGET_KERNEL_MODULES := ext_modules hboot

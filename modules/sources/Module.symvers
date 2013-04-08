@@ -1,0 +1,6 @@
+0x00000000	PVRGetDisplayClassJTable2	/home/home/god/work/jordan/tpruvot-ics/device/motorola/jordan/modules/sources/omap3/gpu/pvr/pvrsrvkm	EXPORT_SYMBOL
+0x00000000	lookup_symbol_address	/home/home/god/work/jordan/tpruvot-ics/device/motorola/jordan/modules/sources/symsearch/symsearch	EXPORT_SYMBOL
+0x00000000	cpufreq_stats_freq_update	/home/home/god/work/jordan/tpruvot-ics/device/motorola/jordan/modules/sources/overclock/cpufreq_stats	EXPORT_SYMBOL
+0x00000000	PVRGetBufferClassJTable2	/home/home/god/work/jordan/tpruvot-ics/device/motorola/jordan/modules/sources/omap3/gpu/pvr/pvrsrvkm	EXPORT_SYMBOL
+0x00000000	capcap_dumpnames	/home/home/god/work/jordan/tpruvot-ics/device/motorola/jordan/modules/sources/logcap/logcap	EXPORT_SYMBOL
+0x00000000	capcap_regname	/home/home/god/work/jordan/tpruvot-ics/device/motorola/jordan/modules/sources/logcap/logcap	EXPORT_SYMBOL

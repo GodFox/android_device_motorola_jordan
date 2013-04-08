@@ -44,8 +44,8 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
 	${device_path}/vold.fstab:system/etc/vold.fstab \
 	${device_path}/media_profiles.xml:system/etc/media_profiles.xml \
-	${device_path}/modules/modules.alias:system/lib/modules/modules.alias \
-	${device_path}/modules/modules.dep:system/lib/modules/modules.dep \
+	${device_path}/modules/sources/modules.alias:system/lib/modules/modules.alias \
+	${device_path}/modules/sources/modules.dep:system/lib/modules/modules.dep \
 	$(DEVICE_PREBUILT)/etc/init.d/01sysctl:system/etc/init.d/01sysctl \
 	$(DEVICE_PREBUILT)/etc/init.d/02baseband:system/etc/init.d/02baseband \
 	$(DEVICE_PREBUILT)/etc/init.d/03firstboot:system/etc/init.d/03firstboot \

@@ -33,11 +33,19 @@ PRODUCT_COPY_FILES += \
 	${bm_device}/profiles/2nd-boot/hbootmod.ko:system/bootmenu/2nd-boot/hbootmod.ko \
 	${bm_device}/profiles/2nd-boot/hboot.bin:system/bootmenu/2nd-boot/hboot.bin \
 	${bm_device}/profiles/2nd-boot/hboot.cfg:system/bootmenu/2nd-boot/hboot.cfg \
-	${bm_device}/profiles/2nd-boot/cmdline:system/bootmenu/2nd-boot/cmdline \
 	${bm_device}/profiles/2nd-boot/devtree:system/bootmenu/2nd-boot/devtree \
-	${bm_device}/profiles/2nd-boot/ramdisk.gz:system/bootmenu/2nd-boot/ramdisk.gz \
-	${bm_device}/profiles/2nd-boot/zImage:system/bootmenu/2nd-boot/zImage \
+#	${bm_device}/profiles/2nd-boot/cmdline:system/bootmenu/2nd-boot/cmdline \
+#	${bm_device}/profiles/2nd-boot/ramdisk.gz:system/bootmenu/2nd-boot/ramdisk.gz \
+#	${bm_device}/profiles/2nd-boot/zImage:system/bootmenu/2nd-boot/zImage \
 
+# Ramdisk
+PRODUCT_COPY_FILES += \
+	${bm_device}/profiles/ramdisk/ueventd.rc:root/ueventd.rc \
+	${bm_device}/profiles/ramdisk/init.usb.rc:root/init.usb.rc \
+	${bm_device}/profiles/ramdisk/init.mapphone_umts.rc:root/init.mapphone_umts.rc \
+	${bm_device}/profiles/ramdisk/init.rc:root/init.rc \
+	${bm_device}/profiles/ramdisk/init.cm.rc:root/init.cm.rc \
+	
 # scripts
 PRODUCT_COPY_FILES += \
 	${bm_device}/bootmenu/script/2nd-init.sh:system/bootmenu/script/2nd-init.sh \

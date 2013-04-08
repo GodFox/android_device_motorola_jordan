@@ -4,13 +4,10 @@
 
 # list of modules to build :
 obj-m += symsearch/
-obj-m += overclock/
 obj-m += backlight/
-obj-m += logcap/
 obj-m += klogger/
 
-# mb525/mb526 specific
-obj-m += proximity/
+
 
 # SGX ###############################
 
@@ -27,9 +24,6 @@ obj-m += omap3/gpu/pvr/
 endif
 
 #####################################
-
-# experimental
-obj-m += camera_misc/
 
 EXTRA_CFLAGS += -I$(KERNEL_DIR)
 
@@ -48,6 +42,14 @@ obj-m += clockfix/
 obj-m += netfilter/
 obj-m += thumbee/
 obj-m += usbled/
+obj-m += overclock/
+obj-m += logcap/
+
+# mb525/mb526 specific
+obj-m += proximity/
+
+# experimental
+obj-m += camera_misc/
 
 endif
 #####################################
