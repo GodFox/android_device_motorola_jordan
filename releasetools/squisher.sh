@@ -7,8 +7,8 @@
 # VENDOR_TOP=$ANDROID_BUILD_TOP/vendor/motorola/jordan
 
 # Delete unwanted apps
-rm -f $REPACK/ota/system/app/RomManager.apk
-rm -f $REPACK/ota/system/app/VideoEditor.apk
+# rm -f $REPACK/ota/system/app/RomManager.apk
+# rm -f $REPACK/ota/system/app/VideoEditor.apk
 
 # Remove big videos
 rm -f $REPACK/ota/system/media/video/*.480p.mp4
@@ -22,6 +22,15 @@ chmod +x $REPACK/ota/system/bin/mount_ext3.sh
 
 mkdir -p $REPACK/ota/system/etc/terminfo/x
 cp $REPACK/ota/system/etc/terminfo/l/linux $REPACK/ota/system/etc/terminfo/x/xterm
+
+# Copy kernel & ramdisk
+cp -f $DEVICE_OUT/kernel $REPACK/ota/system/bootmenu/2nd-boot/zImage
+cp -f $DEVICE_OUT/ramdisk.img $REPACK/ota/system/bootmenu/2nd-boot/ramdisk
+
+# Copy data partion
+cp -rf $DEVICE_OUT/data $REPACK/ota/system/
+
+rm -rf $REPACK/ota/recovery
 
 # prebuilt boot, devtree, logo & updater-script
 rm -f $REPACK/ota/boot.img

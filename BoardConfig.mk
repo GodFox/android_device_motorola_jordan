@@ -29,5 +29,5 @@ BOARD_DEFY_MODEL := DEFY_FROYO
 TARGET_CUSTOM_RELEASETOOL := ./device/motorola/jordan/releasetools/squisher
 
 # Use the part that is common between all allwinner
-include device/motorola/defy_common/BoardConfig.mk
+include device/motorola/jordan-common/BoardConfig.mk
 

@@ -10,7 +10,7 @@ echo "================"
 DEVICE_OUT=$ANDROID_BUILD_TOP/out/target/product/jordan
 DEVICE_TOP=$ANDROID_BUILD_TOP/device/motorola/jordan
 VENDOR_TOP=$ANDROID_BUILD_TOP/vendor/motorola/jordan
-DEVICE_COMMON=$ANDROID_BUILD_TOP/device/motorola/defy_common
+DEVICE_COMMON=$ANDROID_BUILD_TOP/device/motorola/jordan-common
 
 CL_PFX="\033[33m"
 CL_INS="\033[36m"
@@ -65,7 +65,7 @@ cd $REPACK/ota
 printf "Unpacking $OTAPACKAGE..."
 unzip $QUIET $OTAPACKAGE
 echo
-cd $REPACK/ota/system/framework
+# cd $REPACK/ota/system/framework
 )
 
 # Include device specific script
@@ -73,13 +73,13 @@ if [ -f $DEVICE_TOP/releasetools/squisher.sh ]; then
        . $DEVICE_TOP/releasetools/squisher.sh
 fi
 
-if [ "$1" != "fast" ]; then
-	$OPTICHARGER framework-res.apk
-	cd $REPACK/ota/system/app
-	find ./ -name \*.apk | $XARGS $OPTICHARGER
-else
-	echo "skipping apk optimization"
-fi
+# if [ "$1" != "fast" ]; then
+# 	$OPTICHARGER framework-res.apk
+# 	cd $REPACK/ota/system/app
+# 	find ./ -name \*.apk | $XARGS $OPTICHARGER
+# else
+# 	echo "skipping apk optimization"
+# fi
 
 # Fix build.prop
 $SED -i \
@@ -108,11 +108,11 @@ cd $REPACK
 MODVERSION=`sed -n -e'/ro\.modversion/s/^.*=//p' $REPACK/ota/system/build.prop`
 : ${MODVERSION:=nightly}
 
-OUTFILE=$OUT/update-cm-$MODVERSION-signed.zip
+OUTFILE=$OUT/$MODVERSION-signed.zip
 
 if [ -n "$CM_NIGHTLY" ]; then
 	MODVERSION=`sed -n -e'/ro\.modversion/s/^.*=//p' $REPACK/ota/system/build.prop`
-	OUTFILE=$OUT/CM$MODVERSION.zip
+	OUTFILE=$OUT/B2G$MODVERSION.zip
 fi
 
 # Pack it up and sign
@@ -121,7 +121,7 @@ echo "Zipping package..."
 echo
 echo "Signing package..."
 SECURITYDIR=$ANDROID_BUILD_TOP/build/target/product/security
-java -Xmx768m \
+$REAL_JAVA_HOME/bin/java -Xmx768m \
 	-jar $ANDROID_BUILD_TOP/out/host/$OUT_TARGET_HOST/framework/signapk.jar \
 	-w $SECURITYDIR/testkey.x509.pem $SECURITYDIR/testkey.pk8 \
 	$REPACK/update.zip $OUTFILE
@@ -136,7 +136,7 @@ img=`basename $OUTFILE`
 cd `dirname $OUTFILE`
 $MD5 $img >$img.md5sum
 echo
-echo -e ${CL_INS}"Package complete: $OUTFILE" ${CL_RST}
+echo ${CL_INS}"Package complete: $OUTFILE" ${CL_RST}
 cat $img.md5sum
 echo
 # Build date and current time:
@@ -145,10 +145,10 @@ ls -l $OUTFILE
 echo
 )
 
-if [ -x $DEVICE_TOP/releasetools/addons ]; then
-	$DEVICE_TOP/releasetools/addons kernel
+#if [ -x $DEVICE_TOP/releasetools/addons ]; then
+#	$DEVICE_TOP/releasetools/addons kernel
 #	$DEVICE_TOP/releasetools/addons bootmenu
 #	$DEVICE_TOP/releasetools/addons twrp-recovery
-fi
+#fi
 
 exit 0

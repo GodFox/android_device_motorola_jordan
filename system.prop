@@ -69,7 +69,7 @@ ro.product.use_charge_counter=1
 # all/choice
 hwui.print_config=choice
 
-#Place files named by process names in /data/local/hwui.allow/ (or use HWA Selector app)
+# new simplified system to blacklist (use hwui.deny folder)
 hwui.use.blacklist=true
 
 # CpuGovernorService (require ondemand cpu governor)

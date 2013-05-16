@@ -20,10 +20,16 @@
 
 # The gps config appropriate for this device
 $(call inherit-product, device/common/gps/gps_eu_supl.mk)
-$(call inherit-product, device/motorola/defy_common/device.mk)
+$(call inherit-product, device/motorola/jordan-common/device.mk)
 
 ## (3)  Finally, the least specific parts, i.e. the non-GSM-specific aspects
 PRODUCT_PROPERTY_OVERRIDES += \
 	ro.url.safetylegal=http://www.motorola.com/staticfiles/Support/legal/?model=MB525 \
+
+B2G_BUILDTYPE := NIGHTLY
+PRODUCT_RELEASE_NAME := Defy
+MODVERSION := B2G-$(B2G_BUILDTYPE)-$(shell date +%y%m%d)-$(PRODUCT_RELEASE_NAME)
+PRODUCT_PROPERTY_OVERRIDES += \
+	ro.modversion=$(MODVERSION)
 
 
