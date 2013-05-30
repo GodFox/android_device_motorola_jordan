@@ -28,6 +28,14 @@
 BOARD_DEFY_MODEL := DEFY_FROYO
 TARGET_CUSTOM_RELEASETOOL := ./device/motorola/jordan/releasetools/squisher
 
+
+
+
 # Use the part that is common between all allwinner
 include device/motorola/jordan-common/BoardConfig.mk
 
+ifneq ($(BUILD_2NDBOOT_KERNEL),true)
+TARGET_PREBUILT_KERNEL := ./device/motorola/jordan/kernel
+$(shell cp -f $(TARGET_PREBUILT_KERNEL) out/target/product/jordan/kernel)
+$(shell rm -rf out/target/product/jordan/obj/RECOVERY_EXECUTABLES)
+endif
